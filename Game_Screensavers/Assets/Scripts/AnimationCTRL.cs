@@ -1,32 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class AnimationCTRL : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject spriteRenderer;
+    [SerializeField] private Sprite[] spritesCar = new Sprite[3];
 
     void Start() 
     {
-        animator.GetComponent<Animator>();    
+        animator.GetComponent<Animator>();
+        spriteRenderer = GameObject.Find("AnimationCar");
     }
 
-    public void PlayCity()
+    public void PlayFriend()
     {
-        animator.SetTrigger("City");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        animator.SetTrigger("Friend");
+        Invoke("StartScene", 4);
     }
 
-    public void PlayVillage()
+    public void PlayCat()
     {
-        animator.SetTrigger("Village");
-        // new WaitForSeconds(4);
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        animator.SetTrigger("Cat");
+        Invoke("StartScene", 4);
     }
 
-    public void PlayForest()
+    public void PlayShop()
     {
-        animator.SetTrigger("Forest");
-        
+        animator.SetTrigger("Shop");
+        Invoke("StartScene", 4);
+    }
+
+    public void PlayDed()
+    {
+        animator.SetTrigger("Ded");
+        Invoke("StartScene", 9);
+    }
+
+    public void ChooseCarRed()
+    {
+        spriteRenderer.GetComponent<Image>().sprite = spritesCar[0];
+    }
+    public void ChooseCarBlue()
+    {
+        spriteRenderer.GetComponent<Image>().sprite = spritesCar[1];
+    }
+    public void ChooseCarGreen()
+    {
+        spriteRenderer.GetComponent<Image>().sprite = spritesCar[2];
+    }
+
+    public void StartScene()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
