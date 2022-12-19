@@ -7,50 +7,88 @@ using UnityEngine.SceneManagement;
 public class AnimationCTRL : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject background;
     [SerializeField] private GameObject spriteRenderer;
     [SerializeField] private Sprite[] spritesCar = new Sprite[3];
+    private string screenName;
+    
 
     void Start() 
     {
+        background.SetActive(true);
         animator.GetComponent<Animator>();
         spriteRenderer = GameObject.Find("AnimationCar");
+
+        if (PlayerPrefs.GetInt("num") == 1)
+        {   
+            Debug.Log("Финальная сцена!");
+            PlayScreenEnd();
+            PlayerPrefs.SetInt("num", 0);
+        }
     }
 
-    public void PlayFriend()
+    public void PlayScreenStart(string name)
     {
-        animator.SetTrigger("Friend");
-        Invoke("StartScene", 4);
+        switch(name)
+        {
+            case "Friend":
+                PlayerPrefs.SetString("name", "Friend_End");
+
+                animator.SetTrigger("Friend");
+                Invoke("StartScene", 7);
+                break;
+
+            case "Cat":
+                PlayerPrefs.SetString("name", "Cat_End");
+
+                animator.SetTrigger("Cat");
+                Invoke("StartScene", 10);
+                break;
+
+            case "Shop":
+                PlayerPrefs.SetString("name", "Shop_End");
+
+                animator.SetTrigger("Shop");
+                Invoke("StartScene", 6.5f);
+                break;
+
+            case "Ded":
+                PlayerPrefs.SetString("name", "Ded_End");
+
+                animator.SetTrigger("Ded");
+                Invoke("StartScene", 7);
+                break;
+        }
+    }
+    public void PlayScreenEnd()
+    {
+        spriteRenderer.GetComponent<Image>().sprite = spritesCar[PlayerPrefs.GetInt("car")];
+        background.SetActive(false);
+        switch(PlayerPrefs.GetString("name"))
+        {
+            case "Friend_End":
+                animator.SetTrigger("Friend_End");
+                Invoke("Start", 2);
+                break;
+            case "Cat_End":
+                animator.SetTrigger("Cat_End");
+                Invoke("Start", 2);
+                break;
+            case "Shop_End":
+                animator.SetTrigger("Shop_End");
+                Invoke("Start", 2);
+                break;
+            case "Ded_End":
+                animator.SetTrigger("Ded_End");
+                Invoke("Start", 5);
+                break;
+        }     
     }
 
-    public void PlayCat()
+    public void ChooseCar(int car)
     {
-        animator.SetTrigger("Cat");
-        Invoke("StartScene", 4);
-    }
-
-    public void PlayShop()
-    {
-        animator.SetTrigger("Shop");
-        Invoke("StartScene", 4);
-    }
-
-    public void PlayDed()
-    {
-        animator.SetTrigger("Ded");
-        Invoke("StartScene", 9);
-    }
-
-    public void ChooseCarRed()
-    {
-        spriteRenderer.GetComponent<Image>().sprite = spritesCar[0];
-    }
-    public void ChooseCarBlue()
-    {
-        spriteRenderer.GetComponent<Image>().sprite = spritesCar[1];
-    }
-    public void ChooseCarGreen()
-    {
-        spriteRenderer.GetComponent<Image>().sprite = spritesCar[2];
+        PlayerPrefs.SetInt("car", car);
+        spriteRenderer.GetComponent<Image>().sprite = spritesCar[car];
     }
 
     public void StartScene()
