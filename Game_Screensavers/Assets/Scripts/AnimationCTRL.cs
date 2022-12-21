@@ -10,14 +10,14 @@ public class AnimationCTRL : MonoBehaviour
     [SerializeField] private GameObject background;
     [SerializeField] private GameObject spriteRenderer;
     [SerializeField] private Sprite[] spritesCar = new Sprite[3];
-    private string screenName;
+    private bool isEndScene = false;
     
-
     void Start() 
     {
         background.SetActive(true);
         animator.GetComponent<Animator>();
         spriteRenderer = GameObject.Find("AnimationCar");
+        isEndScene = false;
 
         if (PlayerPrefs.GetInt("num") == 1)
         {   
@@ -32,55 +32,56 @@ public class AnimationCTRL : MonoBehaviour
         switch(name)
         {
             case "Friend":
-                PlayerPrefs.SetString("name", "Friend_End");
+                PlayerPrefs.SetString("screenName", "Friend_End");
 
                 animator.SetTrigger("Friend");
-                Invoke("StartScene", 7);
+                Invoke("StartScene", 12);
                 break;
 
             case "Cat":
-                PlayerPrefs.SetString("name", "Cat_End");
+                PlayerPrefs.SetString("screenName", "Cat_End");
 
                 animator.SetTrigger("Cat");
-                Invoke("StartScene", 10);
+                Invoke("StartScene", 13);
                 break;
 
             case "Shop":
-                PlayerPrefs.SetString("name", "Shop_End");
+                PlayerPrefs.SetString("screenName", "Shop_End");
 
                 animator.SetTrigger("Shop");
-                Invoke("StartScene", 6.5f);
+                Invoke("StartScene", 10);
                 break;
 
             case "Ded":
-                PlayerPrefs.SetString("name", "Ded_End");
+                PlayerPrefs.SetString("screenName", "Ded_End");
 
                 animator.SetTrigger("Ded");
-                Invoke("StartScene", 7);
+                Invoke("StartScene", 10.5f);
                 break;
         }
     }
     public void PlayScreenEnd()
     {
+        isEndScene = true;
         spriteRenderer.GetComponent<Image>().sprite = spritesCar[PlayerPrefs.GetInt("car")];
         background.SetActive(false);
-        switch(PlayerPrefs.GetString("name"))
+        switch(PlayerPrefs.GetString("screenName"))
         {
             case "Friend_End":
                 animator.SetTrigger("Friend_End");
-                Invoke("Start", 2);
+                Invoke("Start", 5);
                 break;
             case "Cat_End":
                 animator.SetTrigger("Cat_End");
-                Invoke("Start", 2);
+                Invoke("Start", 5);
                 break;
             case "Shop_End":
                 animator.SetTrigger("Shop_End");
-                Invoke("Start", 2);
+                Invoke("Start", 10.5f);
                 break;
             case "Ded_End":
                 animator.SetTrigger("Ded_End");
-                Invoke("Start", 5);
+                Invoke("Start", 9);
                 break;
         }     
     }
@@ -93,6 +94,13 @@ public class AnimationCTRL : MonoBehaviour
 
     public void StartScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(isEndScene == true)
+        {
+            Start();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }
