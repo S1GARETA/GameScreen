@@ -29,6 +29,26 @@ public class AnimationCTRL : MonoBehaviour
 
     public void PlayScreenStart(string name)
     {
+        var rndElement = Random.Range(0, 4);
+        Debug.Log(rndElement);
+
+        if(rndElement == 0)
+        {
+            name = "Friend";
+        }
+        else if(rndElement == 1)
+        {
+            name = "Cat";
+        }
+        else if(rndElement == 2)
+        {
+            name = "Shop";
+        }
+        else
+        {
+            name = "Ded";
+        }
+
         switch(name)
         {
             case "Friend":
